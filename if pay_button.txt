@@ -1,0 +1,36 @@
+if pay_button:
+    # Generate a Billplz collection request
+    url = f"https://billplz-sandbox.com/api/v3/collections/{collection_id}/create_bill"
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Basic {billplz_api_key}'
+    }
+    payload = {
+        'amount': fee * 100,  # Amount in cents
+        'callback_url': 'http://localhost:8501/Parking_Fee_Calculations',  # Replace with your callback URL
+        'description': 'Parking Fee',
+        'email': 'customer@example.com',
+        'name': 'Customer Name'
+    }
+
+    response = requests.post(url, json=payload, headers=headers)
+
+    if response.status_code == 200:
+        collection_request = response.json()
+        payment_url = collection_request['url']
+        st.markdown(f"Payment URL: [{payment_url}]({payment_url})")
+        st.success("Redirecting to payment page...")
+        st.experimental_rerun()  # Restart the Streamlit app to show the payment URL
+    else:
+        st.error("Error creating collection request")
+
+response = requests.post(url, json=payload, headers=headers)
+
+    if response.status_code == 200:
+        collection_request = response.json()
+        payment_url = collection_request['url']
+        st.markdown(f"Payment URL: [{payment_url}]({payment_url})")
+        st.success("Redirecting to payment page...")
+        st.experimental_rerun()  # Restart the Streamlit app to show the payment URL
+    else:
+        st.error("Error creating collection request")
